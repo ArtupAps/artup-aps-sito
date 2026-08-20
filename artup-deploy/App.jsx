@@ -74,13 +74,13 @@ const PILLARS = [
 ];
 
 const TEAM = [
-  { name: "Santino", role: "Presidente" },
+  { name: "Santino", role: "Presidente", photo: "/team/santino.jpg" },
   { name: "Domenico", role: "Vicepresidente" },
   { name: "Danilo", role: "Segretario" },
   { name: "Andrea Buddike", role: "Tesoriere" },
   { name: "Giovanni", role: "Responsabile Artistico" },
   { name: "Andrea", role: "Responsabile Formazione" },
-  { name: "Davide", role: "Responsabile Comunicazione" },
+  { name: "Davide", role: "Responsabile Comunicazione", photo: "/team/davide.jpg" },
 ];
 
 const SPOT_COLORS = ["var(--magenta)", "var(--blu)", "var(--arancio)"];
@@ -344,6 +344,24 @@ export default function ArtUpSite() {
         .au-team-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; }
         @media (min-width: 700px) { .au-team-grid { grid-template-columns: repeat(4, 1fr); } }
         .au-team-card { background: var(--nero-2); border: 2px solid rgba(242,238,228,0.15); padding: 1.4rem 1.1rem; }
+        .au-team-photo-wrap { position: relative; margin-bottom: 1rem; }
+        .au-team-photo {
+          width: 100%; aspect-ratio: 1; object-fit: cover;
+          filter: grayscale(1) contrast(1.05);
+          display: block;
+        }
+        .au-team-tape {
+          position: absolute; top: -8px; left: 50%; transform: translateX(-50%) rotate(-3deg);
+          width: 46px; height: 16px; background: rgba(255,212,0,0.85);
+        }
+        .au-team-placeholder {
+          width: 100%; aspect-ratio: 1;
+          display: flex; align-items: center; justify-content: center;
+          margin-bottom: 1rem;
+        }
+        .au-team-placeholder span {
+          font-family: 'Bungee', cursive; font-size: 2.2rem; color: rgba(13,13,13,0.35);
+        }
         .au-team-name { font-weight: 800; font-size: 0.98rem; margin: 0 0 0.4rem; line-height: 1.25; }
         .au-team-role { font-size: 0.68rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--giallo); font-weight: 700; }
 
@@ -532,8 +550,18 @@ export default function ArtUpSite() {
         <span className="au-eyebrow">Chi c'è dietro</span>
         <h2 className="au-head-title au-bungee" style={{ marginBottom: "2rem" }}>Il Consiglio Direttivo</h2>
         <div className="au-team-grid">
-          {TEAM.map((m) => (
+          {TEAM.map((m, i) => (
             <div className="au-team-card" key={m.name}>
+              {m.photo ? (
+                <div className="au-team-photo-wrap">
+                  <div className="au-team-tape" />
+                  <img className="au-team-photo" src={m.photo} alt={m.name} loading="lazy" />
+                </div>
+              ) : (
+                <div className="au-team-placeholder" style={{ background: SPOT_COLORS[i % SPOT_COLORS.length] }}>
+                  <span>{m.name.charAt(0)}</span>
+                </div>
+              )}
               <p className="au-team-name">{m.name}</p>
               <span className="au-team-role">{m.role}</span>
             </div>
