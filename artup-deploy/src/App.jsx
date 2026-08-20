@@ -364,7 +364,7 @@ export default function ArtUpSite() {
         </h1>
         <p className="au-hero-tagline">
           Il palco è libero e può salirci qualsiasi artista. Spettacolo, scrittura,
-          cinema e memoria di Napoli — fatti da chi Napoli la vive, non da chi la racconta da fuori.
+          cinema e cura del nostro territorio attraverso l'arte.
         </p>
         <div className="au-hero-ctas">
           <button className="au-btn au-btn-magenta" onClick={() => scrollTo(troisiRef)}>Il progetto Troisi</button>
