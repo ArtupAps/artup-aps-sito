@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import { Analytics } from "@vercel/analytics/react";
 import { createClient } from "@supabase/supabase-js";
 import {
   GraduationCap,
@@ -14,7 +15,24 @@ import {
   Instagram,
   Loader2,
   PenTool,
+  Lock,
+  Copy,
+  Check,
+  ChevronDown,
+  CreditCard,
+  QrCode,
+  HandCoins,
 } from "lucide-react";
+
+const ADMIN_PASSWORD = "artup2026admin"; // 🔧 cambia questa password quando vuoi
+
+// 🔧 SOSTITUISCI questi con i dati veri di ArtUp APS
+const DONATION_INFO = {
+  iban: "IT00 X000 0000 0000 0000 0000 000", // 🔧 IBAN vero dell'associazione
+  intestatario: "ArtUp APS",
+  paypalLink: "https://paypal.me/ArtUpAPS", // 🔧 link PayPal.me vero
+  satispayHandle: "@ArtUpAPS", // 🔧 handle Satispay vero
+};
 
 // 🔧 INCOLLA QUI I TUOI DATI SUPABASE (Project Settings → API)
 // L'anon key è pensata per stare nel codice pubblico: non è un segreto,
@@ -43,7 +61,7 @@ const PILLARS = [
     icon: Clapperboard,
     tag: "DIETRO LA CAMERA",
     title: "Cinema",
-    text: "Riprese, cortometraggi, documentari. Raccontiamo Napoli con una telecamera in mano, senza troppi permessi.",
+    text: "Riprese, cortometraggi, documentari. Raccontiamo la nostra realtà con una telecamera in mano, senza troppi permessi.",
     rot: -0.8,
   },
   {
@@ -56,13 +74,13 @@ const PILLARS = [
 ];
 
 const TEAM = [
-  { name: "Santo Cozzuto", role: "Presidente" },
-  { name: "Domenico Pianese", role: "Vicepresidente" },
-  { name: "Danilo Antonelli", role: "Segretario" },
-  { name: "Andrea B. Subasinghe Arachchige", role: "Tesoriere" },
-  { name: "Giovanni Di Capua", role: "Responsabile Artistico" },
-  { name: "Andrea Lorusso", role: "Responsabile Formazione" },
-  { name: "Davide Lanzano", role: "Responsabile Comunicazione" },
+  { name: "Santino", role: "Presidente" },
+  { name: "Domenico", role: "Vicepresidente" },
+  { name: "Danilo", role: "Segretario" },
+  { name: "Andrea Buddike", role: "Tesoriere" },
+  { name: "Giovanni", role: "Responsabile Artistico" },
+  { name: "Andrea", role: "Responsabile Formazione" },
+  { name: "Davide", role: "Responsabile Comunicazione" },
 ];
 
 const SPOT_COLORS = ["var(--magenta)", "var(--blu)", "var(--arancio)"];
@@ -87,6 +105,7 @@ function formatDate(iso) {
 export default function ArtUpSite() {
   const reducedMotion = usePrefersReducedMotion();
   const [stamped, setStamped] = useState(false);
+  const [donationOpen, setDonationOpen] = useState(false);
   const bachecaRef = useRef(null);
   const troisiRef = useRef(null);
 
@@ -331,6 +350,7 @@ export default function ArtUpSite() {
         /* ---------- SOSTIENICI ---------- */
         .au-sostienici { text-align: center; }
         .au-sostienici-text { color: var(--carta); opacity: 0.78; max-width: 34rem; margin: 0 auto 2rem; line-height: 1.65; font-size: 1rem; }
+        .au-sostienici-ctas { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
 
         /* ---------- FOOTER ---------- */
         .au-footer { padding: 3rem 1.5rem 2.5rem; text-align: center; border-top: 2px solid rgba(242,238,228,0.12); }
@@ -339,6 +359,76 @@ export default function ArtUpSite() {
         .au-footer-row a { color: var(--carta); text-decoration: none; display: inline-flex; align-items: center; gap: 0.4rem; opacity: 0.75; }
         .au-footer-row a:hover { opacity: 1; color: var(--giallo); }
         .au-footer-fine { font-size: 0.7rem; opacity: 0.4; }
+        .au-legal-row { display: flex; align-items: center; justify-content: center; gap: 0.6rem; margin-bottom: 0.8rem; }
+        .au-legal-dot { color: var(--carta); opacity: 0.3; font-size: 0.8rem; }
+        .au-privacy-link {
+          background: none; border: none; color: var(--carta); opacity: 0.55;
+          font-size: 0.75rem; text-decoration: underline; cursor: pointer;
+          font-family: 'Archivo', sans-serif;
+        }
+        .au-privacy-link:hover { opacity: 0.9; color: var(--giallo); }
+
+        /* ---------- PRIVACY MODAL ---------- */
+        .au-modal-overlay {
+          position: fixed; inset: 0; background: rgba(0,0,0,0.75);
+          display: flex; align-items: center; justify-content: center;
+          padding: 1.5rem; z-index: 100;
+        }
+        .au-modal {
+          background: var(--carta); color: var(--nero);
+          max-width: 40rem; max-height: 85vh; overflow-y: auto;
+          padding: 2rem; position: relative; box-shadow: 8px 8px 0 var(--magenta);
+        }
+        .au-modal h2 { font-family: 'Bungee', cursive; font-size: 1.4rem; margin: 0 0 1.2rem; }
+        .au-modal h3 { font-size: 1rem; margin: 1.4rem 0 0.5rem; }
+        .au-modal p, .au-modal li { font-size: 0.92rem; line-height: 1.6; opacity: 0.85; margin: 0 0 0.6rem; }
+        .au-modal-close {
+          position: absolute; top: 1rem; right: 1rem; background: var(--nero); color: var(--carta);
+          border: none; width: 2rem; height: 2rem; cursor: pointer;
+          display: flex; align-items: center; justify-content: center;
+        }
+
+        /* ---------- DONATION MODAL ---------- */
+        .au-pay-methods { display: flex; flex-direction: column; gap: 1rem; margin: 1.4rem 0; }
+        .au-pay-card {
+          border: 2px solid var(--nero); padding: 1.1rem 1.2rem;
+          display: flex; align-items: flex-start; gap: 0.9rem;
+        }
+        .au-pay-icon {
+          width: 2.4rem; height: 2.4rem; border-radius: 50%; flex-shrink: 0;
+          background: var(--nero); color: var(--carta);
+          display: flex; align-items: center; justify-content: center;
+        }
+        .au-pay-title { font-weight: 800; font-size: 0.95rem; margin: 0 0 0.3rem; }
+        .au-pay-detail { font-size: 0.88rem; opacity: 0.75; margin: 0 0 0.5rem; line-height: 1.45; }
+        .au-pay-value {
+          font-family: 'Archivo', monospace; font-weight: 700; font-size: 0.88rem;
+          background: rgba(0,0,0,0.06); padding: 0.4rem 0.6rem;
+          display: inline-flex; align-items: center; gap: 0.5rem; cursor: pointer;
+          border: none; color: var(--nero);
+        }
+        .au-pay-value:hover { background: rgba(0,0,0,0.12); }
+        .au-pay-link {
+          display: inline-flex; align-items: center; gap: 0.4rem;
+          font-weight: 800; font-size: 0.88rem; color: var(--magenta); text-decoration: none;
+        }
+        .au-pay-link:hover { text-decoration: underline; }
+
+        .au-fiscal-toggle {
+          width: 100%; display: flex; align-items: center; justify-content: space-between;
+          background: var(--giallo); color: var(--nero); border: none;
+          padding: 0.9rem 1.1rem; font-weight: 800; font-size: 0.9rem; cursor: pointer;
+          margin-top: 0.6rem;
+        }
+        .au-fiscal-toggle svg { transition: transform 0.2s ease; }
+        .au-fiscal-toggle.open svg { transform: rotate(180deg); }
+        .au-fiscal-body { padding: 1.2rem 0.2rem 0.2rem; }
+        .au-fiscal-body h4 { font-size: 0.9rem; margin: 1rem 0 0.4rem; }
+        .au-fiscal-body p, .au-fiscal-body li { font-size: 0.88rem; line-height: 1.55; opacity: 0.85; margin: 0 0 0.5rem; }
+        .au-fiscal-note {
+          background: rgba(227,28,121,0.08); border-left: 4px solid var(--magenta);
+          padding: 0.8rem 1rem; font-size: 0.85rem; margin-top: 1rem;
+        }
 
         .au-spin { animation: au-spin-kf 0.8s linear infinite; }
         @keyframes au-spin-kf { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
@@ -364,7 +454,7 @@ export default function ArtUpSite() {
         </h1>
         <p className="au-hero-tagline">
           Il palco è libero e può salirci qualsiasi artista. Spettacolo, scrittura,
-          cinema e memoria di Napoli — fatti da chi Napoli la vive, non da chi la racconta da fuori.
+          cinema e memoria di Napoli, raccontati con autenticità da chi la vive ogni giorno.
         </p>
         <div className="au-hero-ctas">
           <button className="au-btn au-btn-magenta" onClick={() => scrollTo(troisiRef)}>Il progetto Troisi</button>
@@ -456,13 +546,17 @@ export default function ArtUpSite() {
         <span className="au-eyebrow">Sostienici</span>
         <h2 className="au-head-title au-bungee">Dona, sponsorizza, partecipa</h2>
         <p className="au-sostienici-text">
-          Come APS in fase di iscrizione al RUNTS, le donazioni danno diritto ad
-          agevolazioni fiscali; per le aziende è possibile anche una sponsorizzazione.
-          Scrivici, ne parliamo.
+          Sostieni ArtUp con una donazione: bonifico, PayPal o Satispay.
+          Per le aziende è possibile anche una sponsorizzazione con visibilità sui progetti.
         </p>
-        <a href="mailto:info@artup-aps.it" className="au-btn au-btn-yellow" style={{ textDecoration: "none" }}>
-          <Mail size={16} /> Scrivici
-        </a>
+        <div className="au-sostienici-ctas">
+          <button className="au-btn au-btn-magenta" onClick={() => setDonationOpen(true)}>
+            <HandCoins size={16} /> Dona ora
+          </button>
+          <a href="mailto:info@artup-aps.it" className="au-btn au-btn-yellow" style={{ textDecoration: "none" }}>
+            <Mail size={16} /> Scrivici per sponsorizzazioni
+          </a>
+        </div>
       </section>
 
       {/* ---------- FOOTER ---------- */}
@@ -474,11 +568,18 @@ export default function ArtUpSite() {
             <Instagram size={14} /> @artup.art.up
           </a>
           <span style={{ display: "inline-flex", alignItems: "center", gap: "0.4rem", opacity: 0.75 }}>
-            <MapPin size={14} /> Napoli
+            <MapPin size={14} /> Vico Solitaria, 38, 80132 Napoli (NA)
           </span>
         </div>
-        <p className="au-footer-fine">ArtUp APS · Associazione di Promozione Sociale · Napoli, Italia</p>
+        <div className="au-legal-row">
+          <a className="au-privacy-link" href="/privacy.html">Privacy &amp; Cookie Policy</a>
+          <span className="au-legal-dot">·</span>
+          <a className="au-privacy-link" href="/termini.html">Termini e Condizioni</a>
+        </div>
+        <p className="au-footer-fine">ArtUp APS · Associazione di Promozione Sociale · Sede legale: Vico Solitaria, 38, 80132 Napoli (NA)</p>
       </footer>
+      {donationOpen && <DonationModal onClose={() => setDonationOpen(false)} />}
+      <Analytics />
     </div>
   );
 }
@@ -533,6 +634,12 @@ function Bacheca() {
   };
 
   const handleDelete = async (id) => {
+    const pwd = window.prompt("Password amministratore per eliminare l'annuncio:");
+    if (pwd === null) return;
+    if (pwd !== ADMIN_PASSWORD) {
+      window.alert("Password errata. Annuncio non eliminato.");
+      return;
+    }
     const { error: deleteError } = await supabase.from("posts").delete().eq("id", id);
     if (deleteError) {
       setError(true);
@@ -607,7 +714,7 @@ function Bacheca() {
         <div className="au-posts">
           {posts.map((post, i) => (
             <article className="au-post" key={post.id} style={{ "--post-color": SPOT_COLORS[i % SPOT_COLORS.length] }}>
-              <button className="au-post-delete" onClick={() => handleDelete(post.id)} aria-label="Elimina annuncio" title="Elimina annuncio"><X size={15} /></button>
+              <button className="au-post-delete" onClick={() => handleDelete(post.id)} aria-label="Elimina annuncio (richiede password admin)" title="Elimina annuncio (richiede password admin)"><Lock size={13} /></button>
               <span className="au-post-tag">{post.type === "call" ? "Call per artisti" : "Annuncio"}</span>
               <h3 className="au-post-title">{post.title}</h3>
               <p className="au-post-text">{post.content}</p>
@@ -621,6 +728,131 @@ function Bacheca() {
         </div>
       )}
       {error && <p style={{ color: "var(--magenta)", fontSize: "0.85rem", marginTop: "1rem" }}>Problema nel salvataggio. Riprova.</p>}
+    </div>
+  );
+}
+
+/* =========================================================
+   DONA ORA — modale con metodi di pagamento + vantaggi fiscali
+   ========================================================= */
+function DonationModal({ onClose }) {
+  const [copied, setCopied] = useState(false);
+  const [fiscalOpen, setFiscalOpen] = useState(false);
+
+  const copyIban = async () => {
+    try {
+      await navigator.clipboard.writeText(DONATION_INFO.iban.replace(/\s/g, ""));
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      // clipboard non disponibile, l'utente copia a mano
+    }
+  };
+
+  return (
+    <div className="au-modal-overlay" onClick={onClose}>
+      <div className="au-modal" onClick={(e) => e.stopPropagation()}>
+        <button className="au-modal-close" onClick={onClose} aria-label="Chiudi">✕</button>
+        <h2>Dona ad ArtUp APS</h2>
+        <p style={{ fontSize: "0.92rem", opacity: 0.8, marginBottom: "1.2rem" }}>
+          Ogni donazione, piccola o grande, ci aiuta a portare avanti spettacoli,
+          laboratori e il progetto della mostra permanente su Massimo Troisi.
+          Scegli il metodo che preferisci:
+        </p>
+
+        <div className="au-pay-methods">
+          <div className="au-pay-card">
+            <div className="au-pay-icon"><Landmark size={18} /></div>
+            <div>
+              <p className="au-pay-title">Bonifico bancario</p>
+              <p className="au-pay-detail">
+                Intestato a {DONATION_INFO.intestatario}. Causale consigliata:
+                "Erogazione liberale ad ArtUp APS". Nessuna commissione.
+              </p>
+              <button className="au-pay-value" onClick={copyIban}>
+                {copied ? <Check size={14} /> : <Copy size={14} />}
+                {DONATION_INFO.iban}
+              </button>
+            </div>
+          </div>
+
+          <div className="au-pay-card">
+            <div className="au-pay-icon"><CreditCard size={18} /></div>
+            <div>
+              <p className="au-pay-title">PayPal</p>
+              <p className="au-pay-detail">
+                Con carta o conto PayPal, in pochi secondi.
+              </p>
+              <a className="au-pay-link" href={DONATION_INFO.paypalLink} target="_blank" rel="noopener noreferrer">
+                {DONATION_INFO.paypalLink} ↗
+              </a>
+            </div>
+          </div>
+
+          <div className="au-pay-card">
+            <div className="au-pay-icon"><QrCode size={18} /></div>
+            <div>
+              <p className="au-pay-title">Satispay</p>
+              <p className="au-pay-detail">
+                Cercaci nell'app Satispay a questo nome, oppure inquadra il QR
+                che trovi ai nostri eventi dal vivo.
+              </p>
+              <span className="au-pay-value" style={{ cursor: "default" }}>{DONATION_INFO.satispayHandle}</span>
+            </div>
+          </div>
+        </div>
+
+        <button
+          className={`au-fiscal-toggle ${fiscalOpen ? "open" : ""}`}
+          onClick={() => setFiscalOpen((v) => !v)}
+        >
+          <span>💶 I vantaggi fiscali della tua donazione</span>
+          <ChevronDown size={18} />
+        </button>
+
+        {fiscalOpen && (
+          <div className="au-fiscal-body">
+            <p>
+              Le donazioni alle Associazioni di Promozione Sociale (APS) iscritte
+              al RUNTS danno diritto a un vantaggio fiscale per chi dona, previsto
+              dall'art. 83 del Codice del Terzo Settore (D.Lgs. 117/2017).
+            </p>
+
+            <h4>Quanto si risparmia</h4>
+            <p>
+              Le persone fisiche possono detrarre dall'IRPEF il <strong>30% dell'importo donato</strong>,
+              fino a un massimo di 30.000 € annui. Esempio: su una donazione di
+              100 €, si recuperano 30 € direttamente in dichiarazione dei redditi.
+            </p>
+            <p>
+              In alternativa, sia le persone fisiche che le imprese possono scegliere
+              di <strong>dedurre</strong> l'importo donato dal reddito complessivo,
+              fino al 10% del reddito dichiarato.
+            </p>
+
+            <h4>Condizioni necessarie</h4>
+            <ul>
+              <li>La donazione deve essere <strong>tracciabile</strong>: bonifico, carta, PayPal o app come Satispay. Il contante non dà mai diritto a benefici fiscali.</li>
+              <li>Il beneficio è valido solo per le donazioni effettuate <strong>dopo il completamento dell'iscrizione di ArtUp al RUNTS</strong>.</li>
+              <li>Conserva sempre la <strong>ricevuta di erogazione liberale</strong> che ArtUp ti invierà su richiesta, da presentare in dichiarazione dei redditi.</li>
+            </ul>
+
+            <h4>Come ottenere la ricevuta</h4>
+            <p>
+              Dopo la donazione scrivici a <strong>info@artup-aps.it</strong> indicando
+              nome, codice fiscale, importo e data: ti invieremo la ricevuta con
+              tutti i dati richiesti dalla normativa.
+            </p>
+
+            <div className="au-fiscal-note">
+              <strong>Nota:</strong> finché la nostra iscrizione al RUNTS non è
+              completata, ogni donazione è comunque benvenuta e preziosa, ma non
+              può ancora dare diritto alla detrazione fiscale. Aggiorneremo questa
+              pagina non appena l'iscrizione sarà effettiva.
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   );
 }
