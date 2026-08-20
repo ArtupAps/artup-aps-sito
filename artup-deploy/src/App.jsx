@@ -137,6 +137,7 @@ export default function ArtUpSite() {
   const [stamped, setStamped] = useState(false);
   const [donationOpen, setDonationOpen] = useState(false);
   const [selectedMember, setSelectedMember] = useState(null);
+  const [troisiOpen, setTroisiOpen] = useState(false);
   const bachecaRef = useRef(null);
   const troisiRef = useRef(null);
 
@@ -327,7 +328,12 @@ export default function ArtUpSite() {
           padding: 2.4rem 1.8rem;
           position: relative;
           box-shadow: 9px 9px 0 var(--arancio);
+          border: none; text-align: left; width: 100%; cursor: pointer;
+          font-family: 'Archivo', sans-serif;
+          transition: transform 0.15s ease, box-shadow 0.15s ease;
         }
+        .au-troisi-card:hover { transform: translate(-2px, -2px); box-shadow: 11px 11px 0 var(--arancio); }
+        .au-troisi-card:focus-visible { outline: 3px solid var(--giallo); outline-offset: 3px; }
         @media (min-width: 768px) { .au-troisi-card { padding: 3.2rem; } }
         .au-troisi-title { font-family: 'Bungee', cursive; font-size: clamp(1.7rem, 4vw, 2.5rem); line-height: 1.08; margin: 0 0 1.2rem; }
         .au-troisi-text { font-size: 1.02rem; line-height: 1.65; margin: 0 0 1.6rem; opacity: 0.85; }
@@ -485,6 +491,28 @@ export default function ArtUpSite() {
           padding: 0.8rem 1rem; font-size: 0.85rem; margin-top: 1rem;
         }
 
+        /* ---------- TROISI MODAL ---------- */
+        .au-troisi-modal-eyebrow { display: block; text-align: center; }
+        .au-troisi-modal-text { font-size: 1rem; line-height: 1.7; margin: 0 0 1.1rem; opacity: 0.85; }
+        .au-troisi-modal-cta {
+          background: var(--arancio); color: var(--nero);
+          padding: 1rem 1.1rem; margin-top: 1.4rem;
+          font-weight: 700; font-size: 0.95rem; line-height: 1.5;
+        }
+        .au-troisi-modal-cta a { color: var(--nero); font-weight: 900; text-decoration: underline; }
+
+        .au-troisi-hero-img {
+          width: 100%; display: block; margin: 0 0 1.6rem;
+          border: 3px solid var(--nero);
+          box-shadow: 8px 8px 0 var(--blu);
+        }
+        .au-troisi-thumb-wrap {
+          margin-bottom: 1.4rem; position: relative;
+          border: 3px solid var(--nero);
+          box-shadow: 6px 6px 0 var(--blu);
+        }
+        .au-troisi-thumb { width: 100%; display: block; aspect-ratio: 4/3; object-fit: cover; }
+
         /* ---------- TEAM MEMBER MODAL ---------- */
         .au-member-photo-wrap { position: relative; width: 9rem; margin: 0 auto 1.2rem; }
         .au-member-photo {
@@ -587,17 +615,21 @@ export default function ArtUpSite() {
       {/* ---------- TROISI ---------- */}
       <section className="au-section au-troisi" ref={troisiRef}>
         <span className="au-eyebrow">Il progetto grande</span>
-        <div className="au-troisi-card">
-          <h2 className="au-troisi-title">Una casa vera per Massimo Troisi</h2>
+        <button className="au-troisi-card" onClick={() => setTroisiOpen(true)}>
+          <div className="au-troisi-thumb-wrap">
+            <img className="au-troisi-thumb" src="/troisi/ritratto.jpg" alt="Illustrazione per il progetto Massimo Troisi" loading="lazy" />
+          </div>
+          <h2 className="au-troisi-title">Una casa dove tutti possano visitare Massimo Troisi</h2>
           <p className="au-troisi-text">
-            Stiamo raccogliendo materiali, cimeli e testimonianze originali donati
-            da chi lo ha conosciuto, per aprire una mostra permanente nel centro
-            storico di Napoli. Non un museo polveroso: un posto vivo, come tutto
-            il resto di quello che facciamo.
+            Materiali, cimeli e testimonianze originali: ne abbiamo già raccolti
+            un sacco, pronti da esporre. Manca solo un posto — cerchiamo uno
+            spazio nel centro storico di Napoli per aprire le porte a tutti.
           </p>
-          <p className="au-troisi-marker au-marker">— si accettano idee, materiali, una mano a montare.</p>
-        </div>
+          <p className="au-troisi-marker au-marker">— scopri di più →</p>
+        </button>
       </section>
+
+      {troisiOpen && <TroisiModal onClose={() => setTroisiOpen(false)} />}
 
       {/* ---------- BACHECA ---------- */}
       <section className="au-section" ref={bachecaRef}>
@@ -976,6 +1008,50 @@ function TeamMemberModal({ member, onClose }) {
         <p className="au-member-name">{member.name}</p>
         <span className="au-member-role">{member.role}</span>
         <p className="au-member-bio">{member.bio}</p>
+      </div>
+    </div>
+  );
+}
+
+/* =========================================================
+   PROGETTO TROISI — pannello espanso
+   ========================================================= */
+function TroisiModal({ onClose }) {
+  return (
+    <div className="au-modal-overlay" onClick={onClose}>
+      <div className="au-modal" onClick={(e) => e.stopPropagation()}>
+        <button className="au-modal-close" onClick={onClose} aria-label="Chiudi">✕</button>
+        <img className="au-troisi-hero-img" src="/troisi/ritratto.jpg" alt="Illustrazione per il progetto Massimo Troisi" />
+        <span className="au-eyebrow au-troisi-modal-eyebrow">Il progetto grande</span>
+        <h2>Una casa dove tutti possano visitare Massimo Troisi</h2>
+
+        <p className="au-troisi-modal-text">
+          Massimo Troisi ha raccontato Napoli come pochi altri — con la sua
+          ironia, la sua malinconia, il suo modo di essere profondamente
+          napoletano e universale allo stesso tempo. Vogliamo dargli una casa
+          vera, nel cuore della città che ha amato e raccontato.
+        </p>
+
+        <p className="au-troisi-modal-text">
+          <strong>Non partiamo da zero</strong>: abbiamo già raccolto un sacco
+          di materiale — cimeli, fotografie, testimonianze originali di chi lo
+          ha conosciuto e lavorato con lui — abbastanza da poter allestire una
+          mostra vera, non un cassetto pieno di ricordi.
+        </p>
+
+        <p className="au-troisi-modal-text">
+          Quello che ci manca è lo spazio. <strong>Cerchiamo un posto nel
+          centro storico di Napoli</strong>: non un museo polveroso con le
+          teche e i cartellini, ma un luogo vivo, aperto, dove chiunque possa
+          entrare, sedersi, guardare, ricordare — o scoprirlo per la prima
+          volta.
+        </p>
+
+        <div className="au-troisi-modal-cta">
+          Conosci un posto libero in centro? Hai materiali da donare o voglia
+          di dare una mano a montare? Scrivici a{" "}
+          <a href="mailto:info@artup-aps.it">info@artup-aps.it</a>.
+        </div>
       </div>
     </div>
   );
