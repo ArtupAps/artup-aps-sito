@@ -56,8 +56,8 @@ const PILLARS = [
 ];
 
 const TEAM = [
-  { name: "Santino },
-  { name: "Domenico " },
+  { name: "Santino" },
+  { name: "Domenico" },
   { name: "Danilo" },
   { name: "Andrea" },
   { name: "Giovanni" },
