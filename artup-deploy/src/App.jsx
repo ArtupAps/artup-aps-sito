@@ -74,13 +74,43 @@ const PILLARS = [
 ];
 
 const TEAM = [
-  { name: "Santino", role: "Presidente", photo: "/team/santino.jpg" },
-  { name: "Domenico", role: "Vicepresidente" },
-  { name: "Danilo", role: "Segretario" },
-  { name: "Andrea Buddike", role: "Tesoriere" },
-  { name: "Giovanni", role: "Responsabile Artistico" },
-  { name: "Andrea", role: "Responsabile Formazione" },
-  { name: "Davide", role: "Responsabile Comunicazione", photo: "/team/davide.jpg" },
+  {
+    name: "Santino",
+    role: "Presidente",
+    photo: "/team/santino.jpg",
+    bio: "Tiene insieme i pezzi di ArtUp — dalla burocrazia alle serate sul palco. Se c'è una decisione da prendere o una porta da aprire, di solito la apre lui.",
+  },
+  {
+    name: "Domenico",
+    role: "Vicepresidente",
+    bio: "Copre le spalle al Presidente e manda avanti le cose quando serve una seconda testa. Presente a ogni Art-Up Night, di solito con un microfono in mano prima o poi.",
+  },
+  {
+    name: "Danilo",
+    role: "Segretario",
+    bio: "Tiene in ordine quello che il resto di noi si dimentica: verbali, carte, scadenze. Senza di lui ArtUp esisterebbe solo nella nostra testa.",
+  },
+  {
+    name: "Andrea Buddike",
+    role: "Tesoriere",
+    bio: "Fa quadrare i conti di un'associazione che vive di entusiasmo e budget striminziti. Sa sempre quanto c'è in cassa, anche quando preferiremmo non saperlo.",
+  },
+  {
+    name: "Giovanni",
+    role: "Responsabile Artistico",
+    bio: "Decide chi sale sul palco e come si costruisce una serata. Il gusto artistico di ArtUp passa quasi sempre dalle sue mani.",
+  },
+  {
+    name: "Andrea",
+    role: "Responsabile Formazione",
+    bio: "Guida i laboratori di scrittura e i percorsi tecnico-artistici. Crede che insegnare un mestiere sia il modo migliore per farlo sopravvivere.",
+  },
+  {
+    name: "Davide",
+    role: "Responsabile Comunicazione",
+    photo: "/team/davide.jpg",
+    bio: "La voce di ArtUp fuori dalle nostre quattro mura — social, comunicazione, e spesso anche il microfono sul palco, quando la voce serve pure dentro.",
+  },
 ];
 
 const SPOT_COLORS = ["var(--magenta)", "var(--blu)", "var(--arancio)"];
@@ -106,6 +136,7 @@ export default function ArtUpSite() {
   const reducedMotion = usePrefersReducedMotion();
   const [stamped, setStamped] = useState(false);
   const [donationOpen, setDonationOpen] = useState(false);
+  const [selectedMember, setSelectedMember] = useState(null);
   const bachecaRef = useRef(null);
   const troisiRef = useRef(null);
 
@@ -343,7 +374,13 @@ export default function ArtUpSite() {
         /* ---------- TEAM ---------- */
         .au-team-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; }
         @media (min-width: 700px) { .au-team-grid { grid-template-columns: repeat(4, 1fr); } }
-        .au-team-card { background: var(--nero-2); border: 2px solid rgba(242,238,228,0.15); padding: 1.4rem 1.1rem; }
+        .au-team-card {
+          background: var(--nero-2); border: 2px solid rgba(242,238,228,0.15); padding: 1.4rem 1.1rem;
+          font-family: 'Archivo', sans-serif; text-align: left; cursor: pointer; width: 100%;
+          transition: border-color 0.15s ease, transform 0.15s ease;
+        }
+        .au-team-card:hover { border-color: var(--spot, var(--giallo)); transform: translateY(-2px); }
+        .au-team-card:focus-visible { outline: 2px solid var(--giallo); outline-offset: 2px; }
         .au-team-photo-wrap { position: relative; margin-bottom: 1rem; }
         .au-team-photo {
           width: 100%; aspect-ratio: 1; object-fit: cover;
@@ -448,6 +485,28 @@ export default function ArtUpSite() {
           padding: 0.8rem 1rem; font-size: 0.85rem; margin-top: 1rem;
         }
 
+        /* ---------- TEAM MEMBER MODAL ---------- */
+        .au-member-photo-wrap { position: relative; width: 9rem; margin: 0 auto 1.2rem; }
+        .au-member-photo {
+          width: 9rem; height: 9rem; object-fit: cover;
+          filter: grayscale(1) contrast(1.05); display: block;
+        }
+        .au-member-tape {
+          position: absolute; top: -9px; left: 50%; transform: translateX(-50%) rotate(-3deg);
+          width: 54px; height: 18px; background: rgba(255,212,0,0.85);
+        }
+        .au-member-placeholder {
+          width: 9rem; height: 9rem; margin: 0 auto 1.2rem;
+          display: flex; align-items: center; justify-content: center;
+        }
+        .au-member-placeholder span { font-family: 'Bungee', cursive; font-size: 3rem; color: rgba(13,13,13,0.35); }
+        .au-member-name { font-family: 'Bungee', cursive; font-size: 1.5rem; text-align: center; margin: 0 0 0.4rem; }
+        .au-member-role {
+          display: block; text-align: center; font-weight: 900; font-size: 0.75rem;
+          letter-spacing: 0.1em; text-transform: uppercase; color: var(--magenta); margin-bottom: 1.4rem;
+        }
+        .au-member-bio { font-size: 0.98rem; line-height: 1.65; text-align: center; opacity: 0.85; }
+
         .au-spin { animation: au-spin-kf 0.8s linear infinite; }
         @keyframes au-spin-kf { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
@@ -551,7 +610,12 @@ export default function ArtUpSite() {
         <h2 className="au-head-title au-bungee" style={{ marginBottom: "2rem" }}>Il Consiglio Direttivo</h2>
         <div className="au-team-grid">
           {TEAM.map((m, i) => (
-            <div className="au-team-card" key={m.name}>
+            <button
+              className="au-team-card"
+              key={m.name}
+              onClick={() => setSelectedMember(m)}
+              style={{ "--spot": SPOT_COLORS[i % SPOT_COLORS.length] }}
+            >
               {m.photo ? (
                 <div className="au-team-photo-wrap">
                   <div className="au-team-tape" />
@@ -564,10 +628,14 @@ export default function ArtUpSite() {
               )}
               <p className="au-team-name">{m.name}</p>
               <span className="au-team-role">{m.role}</span>
-            </div>
+            </button>
           ))}
         </div>
       </section>
+
+      {selectedMember && (
+        <TeamMemberModal member={selectedMember} onClose={() => setSelectedMember(null)} />
+      )}
 
       {/* ---------- SOSTIENICI ---------- */}
       <section className="au-section au-sostienici">
@@ -880,6 +948,34 @@ function DonationModal({ onClose }) {
             </div>
           </div>
         )}
+      </div>
+    </div>
+  );
+}
+
+/* =========================================================
+   SCHEDA MEMBRO — foto, ruolo, descrizione
+   ========================================================= */
+function TeamMemberModal({ member, onClose }) {
+  return (
+    <div className="au-modal-overlay" onClick={onClose}>
+      <div className="au-modal" onClick={(e) => e.stopPropagation()} style={{ maxWidth: "26rem" }}>
+        <button className="au-modal-close" onClick={onClose} aria-label="Chiudi">✕</button>
+
+        {member.photo ? (
+          <div className="au-member-photo-wrap">
+            <div className="au-member-tape" />
+            <img className="au-member-photo" src={member.photo} alt={member.name} />
+          </div>
+        ) : (
+          <div className="au-member-placeholder" style={{ background: "var(--giallo)" }}>
+            <span>{member.name.charAt(0)}</span>
+          </div>
+        )}
+
+        <p className="au-member-name">{member.name}</p>
+        <span className="au-member-role">{member.role}</span>
+        <p className="au-member-bio">{member.bio}</p>
       </div>
     </div>
   );
