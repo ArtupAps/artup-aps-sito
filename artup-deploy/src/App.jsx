@@ -617,7 +617,7 @@ export default function ArtUpSite() {
         <span className="au-eyebrow">Il progetto grande</span>
         <button className="au-troisi-card" onClick={() => setTroisiOpen(true)}>
           <div className="au-troisi-thumb-wrap">
-            <img className="au-troisi-thumb" src="/troisi/ritratto.jpg" alt="Illustrazione per il progetto Massimo Troisi" loading="lazy" />
+            <img className="au-troisi-thumb" src="/ritratto.jpg" alt="Illustrazione per il progetto Massimo Troisi" loading="lazy" />
           </div>
           <h2 className="au-troisi-title">Una casa dove tutti possano visitare Massimo Troisi</h2>
           <p className="au-troisi-text">
@@ -1021,7 +1021,7 @@ function TroisiModal({ onClose }) {
     <div className="au-modal-overlay" onClick={onClose}>
       <div className="au-modal" onClick={(e) => e.stopPropagation()}>
         <button className="au-modal-close" onClick={onClose} aria-label="Chiudi">✕</button>
-        <img className="au-troisi-hero-img" src="/troisi/ritratto.jpg" alt="Illustrazione per il progetto Massimo Troisi" />
+        <img className="au-troisi-hero-img" src="/ritratto.jpg" alt="Illustrazione per il progetto Massimo Troisi" />
         <span className="au-eyebrow au-troisi-modal-eyebrow">Il progetto grande</span>
         <h2>Una casa dove tutti possano visitare Massimo Troisi</h2>
 
