@@ -43,7 +43,7 @@ const PILLARS = [
     icon: Clapperboard,
     tag: "DIETRO LA CAMERA",
     title: "Cinema",
-    text: "Riprese, cortometraggi, documentari. Raccontiamo Napoli con una telecamera in mano, senza troppi permessi.",
+    text: "Riprese, cortometraggi, documentari. Raccontiamo quello che ci circonda con una telecamera in mano, senza troppi permessi.",
     rot: -0.8,
   },
   {
@@ -56,13 +56,13 @@ const PILLARS = [
 ];
 
 const TEAM = [
-  { name: "Santo Cozzuto", role: "Presidente" },
-  { name: "Domenico Pianese", role: "Vicepresidente" },
-  { name: "Danilo Antonelli", role: "Segretario" },
-  { name: "Andrea B. Subasinghe Arachchige", role: "Tesoriere" },
-  { name: "Giovanni Di Capua", role: "Responsabile Artistico" },
-  { name: "Andrea Lorusso", role: "Responsabile Formazione" },
-  { name: "Davide Lanzano", role: "Responsabile Comunicazione" },
+  { name: "Santino },
+  { name: "Domenico " },
+  { name: "Danilo" },
+  { name: "Andrea" },
+  { name: "Giovanni" },
+  { name: "AndreaLorusso" },
+  { name: "Davide", },
 ];
 
 const SPOT_COLORS = ["var(--magenta)", "var(--blu)", "var(--arancio)"];
@@ -379,7 +379,7 @@ export default function ArtUpSite() {
           <h2 className="au-head-title au-bungee">Quattro cose, una sola bacheca</h2>
           <p className="au-head-sub">
             ArtUp APS nasce da un'idea semplice: uno spazio libero dove chiunque
-            può esibirsi, imparare, riprendere o custodire un pezzo di cultura napoletana.
+            può esibirsi, imparare e riprendere o custodire un pezzo di cultura napoletana.
           </p>
         </div>
         <div className="au-flyers">
@@ -426,7 +426,7 @@ export default function ArtUpSite() {
             Stiamo raccogliendo materiali, cimeli e testimonianze originali donati
             da chi lo ha conosciuto, per aprire una mostra permanente nel centro
             storico di Napoli. Non un museo polveroso: un posto vivo, come tutto
-            il resto di quello che facciamo.
+            il resto di quello che facciamo. Abbiamo anche un donatore di Lusso
           </p>
           <p className="au-troisi-marker au-marker">— si accettano idee, materiali, una mano a montare.</p>
         </div>
