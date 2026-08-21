@@ -83,16 +83,19 @@ const TEAM = [
   {
     name: "Domenico",
     role: "Vicepresidente",
+    photo: "/team/domenico.jpg",
     bio: "Copre le spalle al Presidente e manda avanti le cose quando serve una seconda testa. Presente a ogni Art-Up Night, di solito con un microfono in mano prima o poi.",
   },
   {
     name: "Danilo",
     role: "Segretario",
+    photo: "/team/danilo.jpg",
     bio: "Tiene in ordine quello che il resto di noi si dimentica: verbali, carte, scadenze. Senza di lui ArtUp esisterebbe solo nella nostra testa.",
   },
   {
     name: "Andrea Buddike",
     role: "Tesoriere",
+    photo: "/team/andrea-buddike.jpg",
     bio: "Fa quadrare i conti di un'associazione che vive di entusiasmo e budget striminziti. Sa sempre quanto c'è in cassa, anche quando preferiremmo non saperlo.",
   },
   {
@@ -103,6 +106,7 @@ const TEAM = [
   {
     name: "Andrea",
     role: "Responsabile Formazione",
+    photo: "/team/andrea-lorusso.jpg",
     bio: "Guida i laboratori di scrittura e i percorsi tecnico-artistici. Crede che insegnare un mestiere sia il modo migliore per farlo sopravvivere.",
   },
   {
