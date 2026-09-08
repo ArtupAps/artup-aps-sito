@@ -26,12 +26,12 @@ import {
 
 const ADMIN_PASSWORD = "artup2026admin"; // 🔧 cambia questa password quando vuoi
 
-// 🔧 SOSTITUISCI questi con i dati veri di ArtUp APS
+// 🔧 SOSTITUISCI questi con i dati veri di ArtUp (finché non siete iscritti al RUNTS, evitate "APS" nei dati pubblici)
 const DONATION_INFO = {
   iban: "IT00 X000 0000 0000 0000 0000 000", // 🔧 IBAN vero dell'associazione
-  intestatario: "ArtUp APS",
-  paypalLink: "https://paypal.me/ArtUpAPS", // 🔧 link PayPal.me vero
-  satispayHandle: "@ArtUpAPS", // 🔧 handle Satispay vero
+  intestatario: "ArtUp",
+  paypalLink: "https://paypal.me/ArtUp", // 🔧 link PayPal.me vero
+  satispayHandle: "@ArtUp", // 🔧 handle Satispay vero
 };
 
 // 🔧 INCOLLA QUI I TUOI DATI SUPABASE (Project Settings → API)
@@ -68,7 +68,7 @@ const PILLARS = [
     icon: Landmark,
     tag: "PATRIMONIO",
     title: "Cultura & memoria",
-    text: "Fotografia, podcast, archivi — e un progetto grande: una casa permanente per la memoria di Massimo Troisi.",
+    text: "Fotografia, podcast, archivi — e un hub creativo che cresce: teatro, scrittura, mostre ed eventi, con Massimo Troisi sempre di casa.",
     rot: 1.5,
   },
 ];
@@ -567,7 +567,7 @@ export default function ArtUpSite() {
           cinema e memoria di Napoli, raccontati con autenticità da chi la vive ogni giorno.
         </p>
         <div className="au-hero-ctas">
-          <button className="au-btn au-btn-magenta" onClick={() => scrollTo(troisiRef)}>Il progetto Troisi</button>
+          <button className="au-btn au-btn-magenta" onClick={() => scrollTo(troisiRef)}>Il progetto grande</button>
           <button className="au-btn au-btn-outline" onClick={() => scrollTo(bachecaRef)}>Bacheca &amp; call artisti</button>
         </div>
       </section>
@@ -578,7 +578,7 @@ export default function ArtUpSite() {
           <span className="au-eyebrow">Cosa facciamo</span>
           <h2 className="au-head-title au-bungee">Quattro cose, una sola bacheca</h2>
           <p className="au-head-sub">
-            ArtUp APS nasce da un'idea semplice: uno spazio libero dove chiunque
+            ArtUp nasce da un'idea semplice: uno spazio libero dove chiunque
             può esibirsi, imparare, riprendere o custodire un pezzo di cultura napoletana.
           </p>
         </div>
@@ -617,18 +617,19 @@ export default function ArtUpSite() {
         <p className="au-rules-more">Altre 6 regole. Le scopri solo salendo sul palco.</p>
       </section>
 
-      {/* ---------- TROISI ---------- */}
+      {/* ---------- HUB CREATIVO ---------- */}
       <section className="au-section au-troisi" ref={troisiRef}>
         <span className="au-eyebrow">Il progetto grande</span>
         <button className="au-troisi-card" onClick={() => setTroisiOpen(true)}>
           <div className="au-troisi-thumb-wrap">
-            <img className="au-troisi-thumb" src="/ritratto.jpg" alt="Illustrazione per il progetto Massimo Troisi" loading="lazy" />
+            <img className="au-troisi-thumb" src="/ritratto.jpg" alt="Illustrazione del progetto ArtUp, dedicata anche a Massimo Troisi" loading="lazy" />
           </div>
-          <h2 className="au-troisi-title">Una casa dove tutti possano visitare Massimo Troisi</h2>
+          <h2 className="au-troisi-title">Un hub creativo per Napoli — con Massimo Troisi sempre di casa</h2>
           <p className="au-troisi-text">
-            Materiali, cimeli e testimonianze originali: ne abbiamo già raccolti
-            un sacco, pronti da esporre. Manca solo un posto — cerchiamo uno
-            spazio nel centro storico di Napoli per aprire le porte a tutti.
+            Teatro, scrittura, confronto, mostre, prove: cerchiamo uno spazio
+            nel centro storico di Napoli per farne un posto vivo, aperto a
+            tutt*, dove Massimo Troisi resta un punto di riferimento ricorrente
+            — non l'unico protagonista.
           </p>
           <p className="au-troisi-marker au-marker">— scopri di più →</p>
         </button>
@@ -709,7 +710,7 @@ export default function ArtUpSite() {
           <span className="au-legal-dot">·</span>
           <a className="au-privacy-link" href="/termini.html">Termini e Condizioni</a>
         </div>
-        <p className="au-footer-fine">ArtUp APS · Associazione di Promozione Sociale · Sede legale: Vico Solitaria, 38, 80132 Napoli (NA)</p>
+        <p className="au-footer-fine">ArtUp · Sede legale: Vico Solitaria, 38, 80132 Napoli (NA)</p>
       </footer>
       {donationOpen && <DonationModal onClose={() => setDonationOpen(false)} />}
       <Analytics />
@@ -886,11 +887,11 @@ function DonationModal({ onClose }) {
     <div className="au-modal-overlay" onClick={onClose}>
       <div className="au-modal" onClick={(e) => e.stopPropagation()}>
         <button className="au-modal-close" onClick={onClose} aria-label="Chiudi">✕</button>
-        <h2>Dona ad ArtUp APS</h2>
+        <h2>Dona ad ArtUp</h2>
         <p style={{ fontSize: "0.92rem", opacity: 0.8, marginBottom: "1.2rem" }}>
           Ogni donazione, piccola o grande, ci aiuta a portare avanti spettacoli,
-          laboratori e il progetto della mostra permanente su Massimo Troisi.
-          Scegli il metodo che preferisci:
+          laboratori e il nostro hub creativo, dedicato anche alla memoria di
+          Massimo Troisi. Scegli il metodo che preferisci:
         </p>
 
         <div className="au-pay-methods">
@@ -900,7 +901,7 @@ function DonationModal({ onClose }) {
               <p className="au-pay-title">Bonifico bancario</p>
               <p className="au-pay-detail">
                 Intestato a {DONATION_INFO.intestatario}. Causale consigliata:
-                "Erogazione liberale ad ArtUp APS". Nessuna commissione.
+                "Erogazione liberale ad ArtUp". Nessuna commissione.
               </p>
               <button className="au-pay-value" onClick={copyIban}>
                 {copied ? <Check size={14} /> : <Copy size={14} />}
@@ -1026,30 +1027,34 @@ function TroisiModal({ onClose }) {
     <div className="au-modal-overlay" onClick={onClose}>
       <div className="au-modal" onClick={(e) => e.stopPropagation()}>
         <button className="au-modal-close" onClick={onClose} aria-label="Chiudi">✕</button>
-        <img className="au-troisi-hero-img" src="/ritratto.jpg" alt="Illustrazione per il progetto Massimo Troisi" />
+        <img className="au-troisi-hero-img" src="/ritratto.jpg" alt="Illustrazione del progetto ArtUp, dedicata anche a Massimo Troisi" />
         <span className="au-eyebrow au-troisi-modal-eyebrow">Il progetto grande</span>
-        <h2>Una casa dove tutti possano visitare Massimo Troisi</h2>
+        <h2>Un hub creativo per Napoli — con Massimo Troisi sempre di casa</h2>
 
         <p className="au-troisi-modal-text">
-          Massimo Troisi ha raccontato Napoli come pochi altri — con la sua
-          ironia, la sua malinconia, il suo modo di essere profondamente
-          napoletano e universale allo stesso tempo. Vogliamo dargli una casa
-          vera, nel cuore della città che ha amato e raccontato.
+          Ci siamo conosciuti a un evento in onore di Massimo Troisi. Ci ha
+          raccontato Napoli come pochi altri, e resta per noi un punto di
+          riferimento — ma il progetto che vogliamo costruire è più grande di
+          una sola figura: uno spazio vivo per il teatro, la scrittura, il
+          confronto, le mostre e le prove.
         </p>
 
         <p className="au-troisi-modal-text">
-          <strong>Non partiamo da zero</strong>: abbiamo già raccolto un sacco
-          di materiale — cimeli, fotografie, testimonianze originali di chi lo
-          ha conosciuto e lavorato con lui — abbastanza da poter allestire una
-          mostra vera, non un cassetto pieno di ricordi.
+          <strong>Non partiamo da zero</strong>: abbiamo già materiali,
+          contatti e voglia di fare — ci manca solo lo spazio. <strong>Cerchiamo
+          un posto nel centro storico di Napoli</strong>: non un museo
+          polveroso con le teche e i cartellini, ma un luogo vivo, aperto,
+          dove chiunque possa esibirsi, scrivere, provare, vedere una mostra o
+          scoprire qualcosa per la prima volta — con Massimo Troisi
+          protagonista ricorrente di tante di queste iniziative, non l'unico
+          soggetto di uno spazio a lui riservato.
         </p>
 
         <p className="au-troisi-modal-text">
-          Quello che ci manca è lo spazio. <strong>Cerchiamo un posto nel
-          centro storico di Napoli</strong>: non un museo polveroso con le
-          teche e i cartellini, ma un luogo vivo, aperto, dove chiunque possa
-          entrare, sedersi, guardare, ricordare — o scoprirlo per la prima
-          volta.
+          Lo facciamo come omaggio, senza alcuna pretesa sui suoi diritti
+          d'immagine: quando su questo palco useremo opere sue o di altri
+          autori, lo faremo sempre nel rispetto del diritto d'autore, SIAE
+          compresa.
         </p>
 
         <div className="au-troisi-modal-cta">
