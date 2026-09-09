@@ -68,7 +68,7 @@ const PILLARS = [
     icon: Landmark,
     tag: "PATRIMONIO",
     title: "Cultura & memoria",
-    text: "Fotografia, podcast, archivi — e un hub creativo che cresce: teatro, scrittura, mostre ed eventi, con Massimo Troisi sempre di casa.",
+    text: "Fotografia, podcast, archivi — e un hub creativo che cresce: teatro, scrittura, mostre ed eventi, con Massimo sempre di casa.",
     rot: 1.5,
   },
 ];
@@ -622,13 +622,13 @@ export default function ArtUpSite() {
         <span className="au-eyebrow">Il progetto grande</span>
         <button className="au-troisi-card" onClick={() => setTroisiOpen(true)}>
           <div className="au-troisi-thumb-wrap">
-            <img className="au-troisi-thumb" src="/ritratto.jpg" alt="Illustrazione del progetto ArtUp, dedicata anche a Massimo Troisi" loading="lazy" />
+            <img className="au-troisi-thumb" src="/ritratto.jpg" alt="Illustrazione del progetto ArtUp, dedicata anche a Massimo" loading="lazy" />
           </div>
-          <h2 className="au-troisi-title">Un hub creativo per Napoli — con Massimo Troisi sempre di casa</h2>
+          <h2 className="au-troisi-title">Un hub creativo per Napoli — con Massimo sempre di casa</h2>
           <p className="au-troisi-text">
             Teatro, scrittura, confronto, mostre, prove: cerchiamo uno spazio
             nel centro storico di Napoli per farne un posto vivo, aperto a
-            tutt*, dove Massimo Troisi resta un punto di riferimento ricorrente
+            tutt*, dove Massimo resta un punto di riferimento ricorrente
             — non l'unico protagonista.
           </p>
           <p className="au-troisi-marker au-marker">— scopri di più →</p>
@@ -891,7 +891,7 @@ function DonationModal({ onClose }) {
         <p style={{ fontSize: "0.92rem", opacity: 0.8, marginBottom: "1.2rem" }}>
           Ogni donazione, piccola o grande, ci aiuta a portare avanti spettacoli,
           laboratori e il nostro hub creativo, dedicato anche alla memoria di
-          Massimo Troisi. Scegli il metodo che preferisci:
+          Massimo. Scegli il metodo che preferisci:
         </p>
 
         <div className="au-pay-methods">
@@ -1027,12 +1027,12 @@ function TroisiModal({ onClose }) {
     <div className="au-modal-overlay" onClick={onClose}>
       <div className="au-modal" onClick={(e) => e.stopPropagation()}>
         <button className="au-modal-close" onClick={onClose} aria-label="Chiudi">✕</button>
-        <img className="au-troisi-hero-img" src="/ritratto.jpg" alt="Illustrazione del progetto ArtUp, dedicata anche a Massimo Troisi" />
+        <img className="au-troisi-hero-img" src="/ritratto.jpg" alt="Illustrazione del progetto ArtUp, dedicata anche a Massimo" />
         <span className="au-eyebrow au-troisi-modal-eyebrow">Il progetto grande</span>
-        <h2>Un hub creativo per Napoli — con Massimo Troisi sempre di casa</h2>
+        <h2>Un hub creativo per Napoli — con Massimo sempre di casa</h2>
 
         <p className="au-troisi-modal-text">
-          Ci siamo conosciuti a un evento in onore di Massimo Troisi. Ci ha
+          Ci siamo conosciuti a un evento in onore di Massimo. Ci ha
           raccontato Napoli come pochi altri, e resta per noi un punto di
           riferimento — ma il progetto che vogliamo costruire è più grande di
           una sola figura: uno spazio vivo per il teatro, la scrittura, il
@@ -1045,7 +1045,7 @@ function TroisiModal({ onClose }) {
           un posto nel centro storico di Napoli</strong>: non un museo
           polveroso con le teche e i cartellini, ma un luogo vivo, aperto,
           dove chiunque possa esibirsi, scrivere, provare, vedere una mostra o
-          scoprire qualcosa per la prima volta — con Massimo Troisi
+          scoprire qualcosa per la prima volta — con Massimo
           protagonista ricorrente di tante di queste iniziative, non l'unico
           soggetto di uno spazio a lui riservato.
         </p>
